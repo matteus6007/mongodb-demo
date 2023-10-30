@@ -1,0 +1,20 @@
+version: '3.7'
+
+networks:
+  default:
+    name: mongodb
+
+services:
+  mongodb:
+    image: mongodb/mongodb-community-server:6.0-ubi8
+    networks:
+      - default    
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=p@ssw0rd
+    volumes:
+      - type: bind
+        source: ./data
+        target: /data/db
