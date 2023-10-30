@@ -1,5 +1,7 @@
 # MongoDB Demo
 
+Demo for importing data into a Mongo Database.
+
 ## Running locally
 
 ### Docker
