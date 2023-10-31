@@ -1,0 +1,22 @@
+{
+    "docs": [
+        {
+            "id": "1234",
+            "name": "Galaxy S24",
+            "family": "Samsung",
+            "storage": "128GB",
+            "colour": "Black",
+            "createdOn": "2023-01-01 09:00:00",
+            "updatedOn": "2023-01-01 09:00:00"
+        },
+        {
+            "id": "5678",
+            "name": "iPhone 15",
+            "family": "Apple",
+            "storage": "256GB",
+            "colour": "White",
+            "createdOn": "2023-01-01 09:00:00",
+            "updatedOn": "2023-01-01 09:00:00"
+        }
+    ]
+}

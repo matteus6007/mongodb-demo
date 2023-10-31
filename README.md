@@ -2,7 +2,15 @@
 
 Demo for importing data into a Mongo Database.
 
-## Running locally
+* [Installation](#installation)
+  * [Docker](#docker)
+  * [Docker Compose](#docker-compose)
+* [MongoDB GUI](#mongodb-gui)
+* [Importing Data](#importing-data)
+  * [Locally](#locally)
+  * [Fix Extended JSON format issues](#fix-extended-json-format-issues)
+
+## Installation
 
 ### Docker
 
@@ -45,27 +53,27 @@ docker-compose up
 Stopping MongoDB:
 
 ```shell
-docker-compose down -v -rmi local --remove-orphans
+docker-compose down -v --rmi local --remove-orphans
 ```
 
-### MongoDB GUI
+## MongoDB GUI
 
 To view databases and query data locally, install [MongoDB Compass](https://www.mongodb.com/docs/compass/current/).
 
 Connect to `mongodb://localhost:27017`.
 
-### Importing Data
+## Importing Data
 
 Inspired by https://www.mongodb.com/developer/products/mongodb/mongoimport-guide/.
 
 Use [mongoimport](https://www.mongodb.com/docs/database-tools/mongoimport/) to import data from CSV and [Extended JSON](https://www.mongodb.com/docs/manual/reference/mongodb-extended-json/) - _note this differs from JSON_.
 
-#### Locally
+### Locally
 
 * Download from [Database Tools](https://www.mongodb.com/docs/database-tools/installation/installation/)
 * Add `/bin` folder to `PATH`
 
-Import single file:
+#### Import Single file
 
 ```shell
 mongoimport --collection=mobiledevices --file='sample-data/mobile-devices.json' --uri mongodb://localhost:27017
@@ -80,13 +88,27 @@ Optional parameters:
 
 Run `mongoimport --help` for full list.
 
-Import multiple files:
+#### Import multiple files
 
 ```shell
 cat ./sample-data/*.json | mongoimport --legacy --collection=mobiledevices --uri mongodb://localhost:27017
 ```
 
-#### Fix Extended JSON format issues
+#### Import JSON array
+
+```shell
+mongoimport --collection=mobiledevices --file='sample-data/json-array/export.json' --uri mongodb://localhost:27017 --jsonArray
+```
+
+_Note: There is a limit of 16MB._
+
+#### Import specific JSON array field
+
+```shell
+jq '.docs' | mongoimport --collection=mobiledevices --file='sample-data/json-array/export2.json' --uri mongodb://localhost:27017 --jsonArray
+```
+
+### Fix Extended JSON format issues
 
 Use a command-line JSON processor [jq](https://jqlang.github.io/jq/) to format fields to match Extended JSON.
 
@@ -127,13 +149,13 @@ Outputs:
 }
 ```
 
-Fix and import single file:
+#### Fix and import single file
 
 ```shell
 jq -f json_fixes.jq ./sample-data/mobile-devices.json | mongoimport  --collection=mobiledevices --uri mongodb://localhost:27017 --mode upsert
 ```
 
-Fix and import multiple files:
+#### Fix and import multiple files
 
 ```shell
 cat ./sample-data/*.json | jq -f json_fixes.jq | mongoimport  --collection=mobiledevices --uri mongodb://localhost:27017 --mode upsert
