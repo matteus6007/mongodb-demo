@@ -56,6 +56,8 @@ Stopping MongoDB:
 docker-compose down -v --rmi local --remove-orphans
 ```
 
+_Note: requires username and password to connect to database._
+
 ## MongoDB GUI
 
 To view databases and query data locally, install [MongoDB Compass](https://www.mongodb.com/docs/compass/current/).
@@ -75,23 +77,32 @@ Use [mongoimport](https://www.mongodb.com/docs/database-tools/mongoimport/) to i
 
 #### Import Single file
 
+Not authenticated:
+
 ```shell
 mongoimport --collection=mobiledevices --file='sample-data/mobile-devices.json' --uri mongodb://localhost:27017
 ```
 
+Authenticated:
+
+```shell
+mongoimport --collection=mobiledevices --file='sample-data/mobile-devices.json' --uri mongodb://localhost:27017 --username root --password p@ssw0rd --authenticationDatabase admin
+```
+
 Optional parameters:
 
-* `db:<database_name>` - name of database, default `test`
-* `legacy` - use Extended JSON v1
-* `drop` - drop collection before inserting documents
-* `mode:[insert|upsert|merge|delete]` - insert: insert only, skips matching documents. upsert: insert new documents or replace existing documents. merge: insert new documents or modify existing documents. delete: deletes matching documents only. If upsert fields match more than one document, only one document is deleted. (default: insert)
+* `--db=<database_name>` - name of database, default `test`
+* `--config` - option to specify a configuration file containing the password
+* `--legacy` - use Extended JSON v1
+* `--drop` - drop collection before inserting documents
+* `--mode=[insert|upsert|merge|delete]` - insert: insert only, skips matching documents. upsert: insert new documents or replace existing documents. merge: insert new documents or modify existing documents. delete: deletes matching documents only. If upsert fields match more than one document, only one document is deleted. (default: insert)
 
 Run `mongoimport --help` for full list.
 
 #### Import multiple files
 
 ```shell
-cat ./sample-data/*.json | mongoimport --legacy --collection=mobiledevices --uri mongodb://localhost:27017
+cat ./sample-data/*.json | mongoimport --collection=mobiledevices --uri mongodb://localhost:27017
 ```
 
 #### Import JSON array
